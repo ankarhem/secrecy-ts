@@ -1,11 +1,16 @@
-import { assert, assertEquals, assertNotEquals } from "@std/assert";
+import { assert, assertEquals, assertThrows } from "@std/assert";
 import { Secret } from "./mod.ts";
 
 Deno.test("Secret - basic functionality", () => {
   const secret = new Secret("password");
   assertEquals(secret.expose(), "password");
   assertEquals(String(secret), "[REDACTED]");
+  assertEquals(secret.toString(), "[REDACTED]");
   assertEquals(JSON.stringify(secret), '"[REDACTED]"');
+  console.log(secret)
+
+  // deno-lint-ignore no-explicit-any
+  assertEquals((secret as any)[Symbol("secretValue")], undefined)
 });
 
 Deno.test("Secret - map transformation", () => {
@@ -41,12 +46,10 @@ Deno.test("Secret - immutability", () => {
   const secret = new Secret("password");
   
   // Attempt to modify the secret should fail
-  try {
+  assertThrows(() => {
+    // deno-lint-ignore no-explicit-any
     (secret as any)[Symbol('secretValue')] = "hacked";
-    throw new Error("Should not be able to modify secret");
-  } catch (error) {
-    assertEquals(error instanceof TypeError, true);
-  }
+  }, TypeError);
 });
 
 Deno.test("Secret - type safety", () => {

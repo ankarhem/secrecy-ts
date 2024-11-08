@@ -16,7 +16,7 @@ export class Secret<T> {
     constructor(value: T) {
         this[secretValue] = value;
         
-        // Prevent the secret from appearing in console.log
+        // Prevent the secret from appearing in toString
         Object.defineProperty(this, 'toString', {
             value: () => Secret.redactedString,
             enumerable: false,
@@ -99,5 +99,9 @@ export class Secret<T> {
      */
     clone(): Secret<T> {
         return new Secret(this[secretValue]);
+    }
+
+    [Symbol.for('nodejs.util.inspect.custom')](): string {
+        return Secret.redactedString;
     }
 }
