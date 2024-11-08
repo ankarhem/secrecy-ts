@@ -10,6 +10,8 @@ Deno.test("Secret - hidden in serialization", () => {
   const secret = new Secret("password");
   assertEquals(String(secret), "[REDACTED]");
   assertEquals(secret.toString(), "[REDACTED]");
+  // deno-lint-ignore no-explicit-any
+  assertEquals((secret as any).toJSON(), "[REDACTED]");
   assertEquals(JSON.stringify(secret), '"[REDACTED]"');
   assertEquals(
     JSON.stringify({
@@ -55,8 +57,13 @@ Deno.test("Secret - equality comparison", () => {
   const secret2 = new Secret("password");
   const secret3 = new Secret("different");
 
+  assertEquals(secret1.equals(secret1), true);
   assertEquals(secret1.equals(secret2), true);
   assertEquals(secret1.equals(secret3), false);
+
+  assertEquals(secret1.equals("password"), false);
+  assertEquals(secret1.equals(null), false);
+  assertEquals(secret1.equals(undefined), false);
 });
 
 Deno.test("Secret - cloning", () => {
@@ -64,27 +71,21 @@ Deno.test("Secret - cloning", () => {
   const cloned = original.clone();
 
   // Values should be equal
-  assertEquals(original.expose(), cloned.expose());
+  assertEquals(original.equals(cloned), true);
 
   // But instances should be different
   assert(
     !Object.is(original, cloned),
     "Cloned instance should be a different object reference",
   );
-
-  // Equals method should still return true
-  assertEquals(original.equals(cloned), true);
 });
 
 Deno.test("Secret - assertSecret", () => {
-  const secret = new Secret("password");
-  assertSecret(secret);
-
+  assertSecret(new Secret("password"));
   assertThrows(() => assertSecret("not a secret"));
 });
 
 Deno.test("Secret - isSecret", () => {
-  const secret = new Secret("password");
-  assert(isSecret(secret));
+  assert(isSecret(new Secret("password")));
   assertFalse(isSecret("not a secret"));
 });

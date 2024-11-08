@@ -78,11 +78,8 @@ export class Secret<T> {
    * const secret2 = secret('password1');
    * console.log(secret1.equals(secret2)); // false
    */
-  equals(other: Secret<T>): boolean {
-    if (!(other instanceof Secret)) {
-      return false;
-    }
-    return this[secretValue] === other[secretValue];
+  equals(other: unknown): boolean {
+    return other instanceof Secret && this[secretValue] === other[secretValue];
   }
 
   /**
