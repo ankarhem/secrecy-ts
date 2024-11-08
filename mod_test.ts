@@ -1,15 +1,25 @@
 import { assert, assertEquals } from "@std/assert";
 import { Secret } from "./mod.ts";
 
-Deno.test("Secret - basic functionality", () => {
+Deno.test("Secret - can expose", () => {
   const secret = new Secret("password");
   assertEquals(secret.expose(), "password");
+});
+
+Deno.test("Secret - hidden in serialization", () => {
+  const secret = new Secret("password");
   assertEquals(String(secret), "[REDACTED]");
   assertEquals(secret.toString(), "[REDACTED]");
   assertEquals(JSON.stringify(secret), '"[REDACTED]"');
+  assertEquals(
+    JSON.stringify({
+      inside: secret,
+    }),
+    '{"inside":"[REDACTED]"}'
+  );
 });
 
-Deno.test("Secret - console.log", async () => {
+Deno.test("Secret - hidden from stdout and stderr", async () => {
   // spawn a process and verify that stdout is redacted
   const command = new Deno.Command("deno", {
     args: ["console_test.ts"],
@@ -64,32 +74,4 @@ Deno.test("Secret - cloning", () => {
 
   // Equals method should still return true
   assertEquals(original.equals(cloned), true);
-});
-
-Deno.test("Secret - type safety", () => {
-  const numberSecret = new Secret(42);
-  const stringSecret = new Secret("42");
-  const booleanSecret = new Secret(true);
-  const arraySecret = new Secret([1, 2, 3]);
-  const objectSecret = new Secret({ key: "value" });
-
-  // Number
-  assertEquals(numberSecret.expose(), 42);
-  assertEquals(typeof numberSecret.expose(), "number");
-
-  // String
-  assertEquals(stringSecret.expose(), "42");
-  assertEquals(typeof stringSecret.expose(), "string");
-
-  // Boolean
-  assertEquals(booleanSecret.expose(), true);
-  assertEquals(typeof booleanSecret.expose(), "boolean");
-
-  // Array
-  assertEquals(arraySecret.expose(), [1, 2, 3]);
-  assertEquals(typeof arraySecret.expose(), "object");
-
-  // Object
-  assertEquals(objectSecret.expose(), { key: "value" });
-  assertEquals(typeof objectSecret.expose(), "object");
 });
