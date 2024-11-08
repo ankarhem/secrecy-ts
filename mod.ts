@@ -1,4 +1,6 @@
-// Symbol used for private access to the inner value
+/**
+ * Symbol used for private access to the inner value
+ */
 const secretValue = Symbol("secretValue");
 
 /**
@@ -134,6 +136,9 @@ export function assertSecret<T>(value: unknown): asserts value is Secret<T> {
   }
 }
 
+/**
+ * The error thrown by assertSecret, if the value is not a Secret.
+ */
 export class SecretError extends Error {
   constructor(message: string) {
     super(message);

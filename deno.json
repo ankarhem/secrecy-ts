@@ -1,6 +1,7 @@
 {
   "name": "@ankarhem/secrecy-ts",
   "version": "0.1.0",
+  "description": "A TypeScript port of the Rust secrecy crate. Wrap secrets in a type to ensure they are not exposed.",
   "exports": "./mod.ts",
   "tasks": {
     "dev": "deno test --watch --allow-all"
@@ -18,5 +19,9 @@
     "indentWidth": 2,
     "lineWidth": 80,
     "useTabs": false
+  },
+  "runtimes": {
+    "deno": ">=2",
+    "node": ">=20"
   }
 }
