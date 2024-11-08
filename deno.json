@@ -13,5 +13,10 @@
   },
   "compilerOptions": {
     "checkJs": true
+  },
+  "fmt": {
+    "indentWidth": 2,
+    "lineWidth": 80,
+    "useTabs": false
   }
 }
