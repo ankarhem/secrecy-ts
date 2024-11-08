@@ -15,7 +15,7 @@ Deno.test("Secret - hidden in serialization", () => {
     JSON.stringify({
       inside: secret,
     }),
-    '{"inside":"[REDACTED]"}'
+    '{"inside":"[REDACTED]"}',
   );
 });
 
@@ -69,7 +69,7 @@ Deno.test("Secret - cloning", () => {
   // But instances should be different
   assert(
     !Object.is(original, cloned),
-    "Cloned instance should be a different object reference"
+    "Cloned instance should be a different object reference",
   );
 
   // Equals method should still return true
