@@ -22,6 +22,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   publish-jsr:
+    needs: publish-tag
     runs-on: ubuntu-latest
     permissions:
       contents: read
