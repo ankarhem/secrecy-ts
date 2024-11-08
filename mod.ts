@@ -94,7 +94,7 @@ export class Secret<T> {
    * const secret = secret('password');
    * const cloned = secret.clone();
    * console.log(cloned.expose()); // 'password'
-   * console.log(secret === cloned); // false
+   * console.log(Object.is(secret, cloned)); // false
    * console.log(secret.equals(cloned)); // true
    */
   clone(): Secret<T> {
