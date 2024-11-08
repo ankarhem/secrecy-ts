@@ -10,6 +10,8 @@ Deno.test("Secret - hidden in serialization", () => {
   const secret = new Secret("password");
   assertEquals(String(secret), "[REDACTED]");
   assertEquals(secret.toString(), "[REDACTED]");
+  assertEquals(secret.valueOf().toString(), "[REDACTED]");
+  assertEquals(`${secret}`, "[REDACTED]");
   // deno-lint-ignore no-explicit-any
   assertEquals((secret as any).toJSON(), "[REDACTED]");
   assertEquals(JSON.stringify(secret), '"[REDACTED]"');
