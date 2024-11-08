@@ -19,3 +19,15 @@ jobs:
         uses: gabeduke/bumpver-action@v1.0.14
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Deno 2
+        uses: denoland/setup-deno@v2
+
+      - name: Set version # Get the version from the tag and update to 'deno.json[c]'
+        uses: MAKS11060/deno-publish-version@v2
+        with:
+          config-file: deno.json # or deno.json
+          tag: ${{ github.ref_name }}
+
+      - name: Publish to JSR
+        run: deno publish --allow-dirty
