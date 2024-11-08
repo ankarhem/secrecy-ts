@@ -1,5 +1,5 @@
-import { assert, assertEquals } from "@std/assert";
-import { Secret } from "./mod.ts";
+import { assert, assertEquals, assertFalse, assertThrows } from "@std/assert";
+import { assertSecret, isSecret, Secret } from "./mod.ts";
 
 Deno.test("Secret - can expose", () => {
   const secret = new Secret("password");
@@ -74,4 +74,17 @@ Deno.test("Secret - cloning", () => {
 
   // Equals method should still return true
   assertEquals(original.equals(cloned), true);
+});
+
+Deno.test("Secret - assertSecret", () => {
+  const secret = new Secret("password");
+  assertSecret(secret);
+
+  assertThrows(() => assertSecret("not a secret"));
+});
+
+Deno.test("Secret - isSecret", () => {
+  const secret = new Secret("password");
+  assert(isSecret(secret));
+  assertFalse(isSecret("not a secret"));
 });
