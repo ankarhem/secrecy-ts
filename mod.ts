@@ -105,3 +105,40 @@ export class Secret<T> {
     return Secret.redactedString;
   }
 }
+
+/**
+ * Type guard to check if a value is a Secret.
+ *
+ * @param value - The value to check.
+ * @returns Whether the value is a Secret.
+ *
+ * @example
+ * const secret = secret('password');
+ * console.log(isSecret(secret)); // true
+ * console.log(isSecret('password')); // false
+ */
+export function isSecret<T>(value: unknown): value is Secret<T> {
+  return value instanceof Secret;
+}
+
+/**
+ * Asserts that a value is a Secret.
+ *
+ * @param value - The value to assert.
+ * @throws {SecretError} If the value is not a Secret.
+ *
+ * @example
+ * const secret = assertSecret('password');
+ * console.log(secret.expose()); // 'password'
+ */
+export function assertSecret<T>(value: unknown): asserts value is Secret<T> {
+  if (!isSecret(value)) {
+    throw new SecretError("Expected a Secret");
+  }
+}
+
+export class SecretError extends Error {
+  constructor(message: string) {
+    super(message);
+  }
+}
