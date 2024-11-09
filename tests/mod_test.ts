@@ -1,5 +1,5 @@
 import { assert, assertEquals, assertFalse, assertThrows } from "@std/assert";
-import { assertSecret, isSecret, Secret } from "./mod.ts";
+import { assertSecret, isSecret, Secret } from "../mod.ts";
 
 Deno.test("Secret - can expose", () => {
   const secret = new Secret("password");
