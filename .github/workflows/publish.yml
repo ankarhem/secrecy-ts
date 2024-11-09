@@ -48,18 +48,15 @@ jobs:
           config-file: deno.json # or deno.json
           tag: ${{ steps.gettag.outputs.tag }}
 
-      - name: Transpile for npm
-        run: deno run --allow-all build.ts
-
-      - name: setup npm
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
           registry-url: "https://registry.npmjs.org"
+      - name: Transpile for npm
+        run: deno run --allow-all build.ts
+      - name: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: npm publish
         run: cd npm && npm publish --provenance --access public
 
       - name: Publish to JSR
