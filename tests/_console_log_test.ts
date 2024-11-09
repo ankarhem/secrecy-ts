@@ -1,9 +1,11 @@
 import { assertEquals } from "@std/assert";
+import { Secret } from "../mod.ts";
+console.log(new Secret("password"));
 
 Deno.test("Secret - hidden from stdout and stderr", async () => {
   // spawn a process and verify that stdout is redacted
   const command = new Deno.Command("deno", {
-    args: ["./tests/console_log.ts"],
+    args: ["./tests/_console_log_test.ts"],
     stdout: "piped",
     stderr: "piped",
     stdin: "piped",
