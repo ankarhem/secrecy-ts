@@ -27,4 +27,7 @@ await build({
       url: "https://github.com/ankarhem/secrecy-ts/issues",
     },
   },
+  postBuild() {
+    Deno.copyFileSync("./README.md", "./npm/README.md");
+  },
 });

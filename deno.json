@@ -4,7 +4,8 @@
   "description": "A TypeScript port of the Rust secrecy crate. Wrap secrets in a type to ensure they are not exposed.",
   "exports": "./mod.ts",
   "tasks": {
-    "dev": "deno test --watch --allow-all"
+    "dev": "deno test --watch --allow-all",
+    "build": "deno run --allow-all build.ts"
   },
   "license": "MIT",
   "imports": {

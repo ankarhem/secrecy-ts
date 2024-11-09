@@ -21,7 +21,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  publish-jsr:
+  publish-to-registries:
     needs: publish-tag
     runs-on: ubuntu-latest
     permissions:
@@ -53,11 +53,11 @@ jobs:
           node-version: 20
           registry-url: "https://registry.npmjs.org"
       - name: Transpile for npm
-        run: deno run --allow-all build.ts
+        run: deno run build
       - name: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: cd npm && npm publish --provenance --access public
 
-      - name: Publish to JSR
+      - name: deno publish
         run: deno publish --allow-dirty
